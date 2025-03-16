@@ -1,36 +1,24 @@
 jQuery(document).ready(function($) {
-    // Listen for the wpcf7mailsent event triggered by Contact Form 7 on successful submission.
-    document.addEventListener('wpcf7mailsent', function(event) {
-        // Locate the content gate container that wraps the form.
-        var $gate = $(event.target).closest('.cg-content-gate');
-        if ( $gate.length ) {
-            // Extract submitted inputs from the event details.
-            var inputs = event.detail.inputs;
-            var data = {
-                action: 'cg_handle_form_submission',
-                nonce: cg_ajax.nonce,
-                name: '',
-                email: ''
-            };
+    $('.cg-gate-form').on('submit', function(e) {
+        e.preventDefault();
 
-            inputs.forEach(function(input) {
-                if ( input.name === 'your-name' ) {
-                    data.name = input.value;
-                }
-                if ( input.name === 'your-email' ) {
-                    data.email = input.value;
-                }
-            });
+        var $form = $(this);
+        var $gate = $form.closest('.cg-content-gate');
+        var name = $form.find('input[name="name"]').val();
+        var email = $form.find('input[name="email"]').val();
 
-            // Make the AJAX call to our custom handler.
-            $.post(cg_ajax.ajax_url, data, function(response) {
-                if ( response.success ) {
-                    $gate.find('.cg-gate-form').hide();
-                    $gate.find('.cg-gated-content').show();
-                } else {
-                    alert('Validation failed: ' + response.data);
-                }
-            });
-        }
-    }, false);
+        $.post(cg_ajax.ajax_url, {
+            action: 'cg_handle_form_submission',
+            nonce: cg_ajax.nonce,
+            name: name,
+            email: email
+        }, function(response) {
+            if (response.success) {
+                $form.hide();
+                $gate.find('.cg-gated-content').show();
+            } else {
+                alert(response.data);
+            }
+        });
+    });
 });
