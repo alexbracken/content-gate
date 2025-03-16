@@ -1,0 +1,18 @@
+{
+    "name": "alexbracken/content-gate",
+    "description": "WordPress Plugin description",
+    "keywords": ["wordpress", "plugin", "roots"],
+    "homepage": "https://github.com/alexbracken/content-gate",
+    "license": "MIT",
+    "authors": [
+      {
+        "name": "Alex Bracken",
+        "email": "hello@alexbracken.co",
+        "homepage": "https://alexbracken.co"
+      }
+    ],
+    "type": "wordpress-plugin",
+    "require": {
+      "php": ">=8.0"
+    }
+  }
