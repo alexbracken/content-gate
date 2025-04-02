@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Custom Content Gate Plugin
+ * Plugin Name: Hello world!
  * Plugin URI: https://example.com/
  * Description: A custom content gate plugin that restricts content until a user submits their name and email.
  * Version: 1.0.0
