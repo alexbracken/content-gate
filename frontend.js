@@ -6,15 +6,20 @@ jQuery(document).ready(function($) {
         var $gate = $form.closest('.cg-content-gate');
         var name = $form.find('input[name="name"]').val();
         var email = $form.find('input[name="email"]').val();
+        var postId = $('#cg-post-id').val();
+        var recaptchaToken = $('#cg-recaptcha-token').length ? $('#cg-recaptcha-token').val() : '';
 
         $.post(cg_ajax.ajax_url, {
             action: 'cg_handle_form_submission',
             nonce: cg_ajax.nonce,
             name: name,
-            email: email
+            email: email,
+            post_id: postId,
+            recaptcha: recaptchaToken
         }, function(response) {
             if (response.success) {
                 $form.hide();
+                $('.cg-message').hide();
                 $gate.find('.cg-gated-content').show();
             } else {
                 alert(response.data);
