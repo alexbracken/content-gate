@@ -1,13 +1,14 @@
 <?php
 /**
- * Plugin Name: Custom Content Gate Plugin
- * Plugin URI: https://example.com/
- * Description: A custom content gate plugin that restricts content until a user submits their name and email.
- * Version: 1.2.0
- * Author: Your Name
+ * Plugin Name: Content Gate
+ * Plugin URI: https://github.com/alexbracken/content-gate
+ * Description: A content gate plugin that restricts content until a user submits their name and email.
+ * Version: 0.1
+ * Author: Alex Bracken
  * License: GPL2+
  */
 
+// Prevent direct access
 defined( 'ABSPATH' ) || exit;
 
 // Include admin and settings files
@@ -33,6 +34,11 @@ function cg_create_table() {
 
     require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
     dbDelta( $sql );
+    
+    // Set default form message if it doesn't exist
+    if (!get_option('cg_form_message')) {
+        add_option('cg_form_message', 'This content is protected.');
+    }
 }
 register_activation_hook( __FILE__, 'cg_create_table' );
 
@@ -59,29 +65,45 @@ add_action( 'init', 'cg_register_block' );
  */
 function cg_render_callback( $attributes, $content ) {
     $site_key = get_option('cg_recaptcha_site_key', '');
+    $form_message = get_option('cg_form_message', 'This content is protected.');
     ob_start();
     ?>
     <div class="cg-content-gate">
+        <div class="cg-message">
+            <p><?php echo esc_html($form_message); ?></p>
+        </div>
         <form class="cg-gate-form">
-            <label for="cg-name">Name:</label>
-            <input type="text" id="cg-name" name="name" required>
-            <label for="cg-email">Email:</label>
-            <input type="email" id="cg-email" name="email" required>
+            <div class="cg-form-group">
+                <label for="cg-name">Name:</label>
+                <input type="text" id="cg-name" name="name" required>
+            </div>
+            
+            <div class="cg-form-group">
+                <label for="cg-email">Email:</label>
+                <input type="email" id="cg-email" name="email" required>
+            </div>
+            
             <input type="hidden" id="cg-post-id" value="<?php echo get_the_ID(); ?>">
             
             <?php if ($site_key): ?>
                 <input type="hidden" id="cg-recaptcha-token" name="recaptcha">
-                <script src="https://www.google.com/recaptcha/api.js?render=<?php echo esc_attr($site_key); ?>"></script>
                 <script>
-                    grecaptcha.ready(function() {
-                        grecaptcha.execute('<?php echo esc_attr($site_key); ?>', { action: 'submit' }).then(function(token) {
-                            document.getElementById('cg-recaptcha-token').value = token;
-                        });
+                    window.addEventListener('load', function() {
+                        if (typeof grecaptcha !== 'undefined') {
+                            grecaptcha.ready(function() {
+                                grecaptcha.execute('<?php echo esc_attr($site_key); ?>', { action: 'submit' }).then(function(token) {
+                                    document.getElementById('cg-recaptcha-token').value = token;
+                                });
+                            });
+                        }
                     });
                 </script>
+                <script src="https://www.google.com/recaptcha/api.js?render=<?php echo esc_attr($site_key); ?>" async defer></script>
             <?php endif; ?>
 
-            <button type="submit">Submit</button>
+            <div class="cg-form-group">
+                <input type="submit" class="button" value="Submit">
+            </div>
         </form>
         <div class="cg-gated-content" style="display:none;">
             <?php echo $content; ?>
@@ -92,7 +114,7 @@ function cg_render_callback( $attributes, $content ) {
 }
 
 /**
- * Enqueue frontend scripts.
+ * Enqueue frontend scripts and styles.
  */
 function cg_enqueue_scripts() {
     if ( has_block( 'cg/content-gate' ) ) {
@@ -102,6 +124,13 @@ function cg_enqueue_scripts() {
             array( 'jquery' ),
             filemtime( plugin_dir_path( __FILE__ ) . 'frontend.js' ),
             true
+        );
+
+        wp_enqueue_style(
+            'cg-frontend-style',
+            plugins_url( 'style.css', __FILE__ ),
+            array(),
+            filemtime( plugin_dir_path( __FILE__ ) . 'style.css' )
         );
 
         wp_localize_script( 'cg-frontend-script', 'cg_ajax', array(
@@ -122,11 +151,11 @@ function cg_handle_form_submission() {
     $name    = sanitize_text_field( $_POST['name'] );
     $email   = sanitize_email( $_POST['email'] );
     $post_id = intval( $_POST['post_id'] );
-    $recaptcha_token = $_POST['recaptcha'];
+    $recaptcha_token = isset($_POST['recaptcha']) ? $_POST['recaptcha'] : '';
 
     // Verify reCAPTCHA
     $secret_key = get_option('cg_recaptcha_secret_key', '');
-    if ($secret_key) {
+    if ($secret_key && $recaptcha_token) {
         $response = wp_remote_post("https://www.google.com/recaptcha/api/siteverify", array(
             'body' => array(
                 'secret'   => $secret_key,
@@ -135,7 +164,7 @@ function cg_handle_form_submission() {
         ));
 
         $result = json_decode(wp_remote_retrieve_body($response), true);
-        if (!$result['success']) {
+        if (!isset($result['success']) || !$result['success']) {
             wp_send_json_error('reCAPTCHA verification failed.');
         }
     }
