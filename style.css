@@ -6,24 +6,45 @@
     margin-bottom: 1em;
 }
 
-.cg-gate-form {
-    margin-bottom: 1.5em;
+.cg-heading {
+    margin-top: 0;
+    margin-bottom: 0.5em;
+}
+
+.cg-subheading {
+    margin-bottom: 1em;
+}
+
+.cg-form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em;
+    align-items: flex-end;
+}
+
+.cg-form-group {
+    flex: 1;
+    min-width: 150px;
 }
 
 .cg-gate-form label {
-    display: inline;
-    margin-right: 0.5em;
-    min-width: 4em;
+    display: block;
+    margin-bottom: 0.25em;
 }
 
+/* Very minimal input styling that will inherit from the theme */
 .cg-gate-form input[type="text"],
 .cg-gate-form input[type="email"] {
-    margin-right: 1em;
-    margin-bottom: 0.75em;
-    width: 50%;
-    max-width: 20em;
+    width: 100%;
 }
 
-.cg-gate-form input[type="submit"] {
-    margin-top: 0.5em;
+/* Mobile responsiveness */
+@media (max-width: 600px) {
+    .cg-form-row {
+        flex-direction: column;
+    }
+    
+    .cg-form-submit {
+        margin-top: 0.5em;
+    }
 }

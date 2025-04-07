@@ -49,13 +49,23 @@ function cg_register_block() {
     wp_register_script(
         'cg-block-script',
         plugins_url( 'block.js', __FILE__ ),
-        array( 'wp-blocks', 'wp-element', 'wp-block-editor' ),
+        array( 'wp-blocks', 'wp-element', 'wp-block-editor', 'wp-components' ),
         filemtime( plugin_dir_path( __FILE__ ) . 'block.js' )
     );
 
     register_block_type( 'cg/content-gate', array(
         'editor_script'   => 'cg-block-script',
         'render_callback' => 'cg_render_callback',
+        'attributes'      => array(
+            'headingText' => array(
+                'type' => 'string',
+                'default' => 'This content is protected.'
+            ),
+            'subheadText' => array(
+                'type' => 'string',
+                'default' => 'Please enter your information to continue.'
+            )
+        )
     ));
 }
 add_action( 'init', 'cg_register_block' );
@@ -65,22 +75,33 @@ add_action( 'init', 'cg_register_block' );
  */
 function cg_render_callback( $attributes, $content ) {
     $site_key = get_option('cg_recaptcha_site_key', '');
-    $form_message = get_option('cg_form_message', 'This content is protected.');
+    
+    // Get custom heading and subhead from block attributes or use defaults
+    $heading_text = isset($attributes['headingText']) ? $attributes['headingText'] : 'This content is protected.';
+    $subhead_text = isset($attributes['subheadText']) ? $attributes['subheadText'] : 'Please enter your information to continue.';
+    
     ob_start();
     ?>
     <div class="cg-content-gate">
         <div class="cg-message">
-            <p><?php echo esc_html($form_message); ?></p>
+            <h4 class="cg-heading"><?php echo esc_html($heading_text); ?></h4>
+            <p class="cg-subheading"><?php echo esc_html($subhead_text); ?></p>
         </div>
         <form class="cg-gate-form">
-            <div class="cg-form-group">
-                <label for="cg-name">Name:</label>
-                <input type="text" id="cg-name" name="name" required>
-            </div>
-            
-            <div class="cg-form-group">
-                <label for="cg-email">Email:</label>
-                <input type="email" id="cg-email" name="email" required>
+            <div class="cg-form-row">
+                <div class="cg-form-group">
+                    <label for="cg-name">Name</label>
+                    <input type="text" id="cg-name" name="name" required>
+                </div>
+                
+                <div class="cg-form-group">
+                    <label for="cg-email">Email</label>
+                    <input type="email" id="cg-email" name="email" required>
+                </div>
+                
+                <div class="cg-form-submit">
+                    <input type="submit" value="Submit">
+                </div>
             </div>
             
             <input type="hidden" id="cg-post-id" value="<?php echo get_the_ID(); ?>">
@@ -100,10 +121,6 @@ function cg_render_callback( $attributes, $content ) {
                 </script>
                 <script src="https://www.google.com/recaptcha/api.js?render=<?php echo esc_attr($site_key); ?>" async defer></script>
             <?php endif; ?>
-
-            <div class="cg-form-group">
-                <input type="submit" class="button" value="Submit">
-            </div>
         </form>
         <div class="cg-gated-content" style="display:none;">
             <?php echo $content; ?>
@@ -112,7 +129,6 @@ function cg_render_callback( $attributes, $content ) {
     <?php
     return ob_get_clean();
 }
-
 /**
  * Enqueue frontend scripts and styles.
  */

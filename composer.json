@@ -1,6 +1,6 @@
 {
     "name": "alexbracken/content-gate",
-    "description": "WordPress Plugin description",
+    "description": "Protect WordPress post content with a simple identification form",
     "keywords": ["wordpress", "plugin", "roots"],
     "homepage": "https://github.com/alexbracken/content-gate",
     "license": "MIT",
