@@ -53,10 +53,33 @@
                         )
                     )
                 ),
-                el( 'p', {}, 'Content Gate: The content below will be hidden until the form is submitted.' ),
-                el( 'p', { style: { fontWeight: 'bold' } }, attributes.headingText ),
-                el( 'p', {}, attributes.subheadText ),
-                el( InnerBlocks )
+                el(
+                    'div',
+                    { className: 'cg-preview' },
+                    el('h4', { className: 'cg-heading' }, attributes.headingText),
+                    el('p', { className: 'cg-subheading' }, attributes.subheadText),
+                    el(
+                        'div',
+                        { className: 'cg-form-preview', style: { display: 'flex', gap: '8px', marginBottom: '15px' } },
+                        el('div', { style: { flex: '1' } }, 
+                            el('label', { style: { display: 'block', marginBottom: '4px' } }, 'Name'), 
+                            el('input', { type: 'text', disabled: true, style: { width: '100%' } })
+                        ),
+                        el('div', { style: { flex: '1' } }, 
+                            el('label', { style: { display: 'block', marginBottom: '4px' } }, 'Email'), 
+                            el('input', { type: 'text', disabled: true, style: { width: '100%' } })
+                        ),
+                        el('div', { style: { alignSelf: 'flex-end' } }, 
+                            el('input', { type: 'button', value: 'Submit', disabled: true })
+                        )
+                    )
+                ),
+                el(
+                    'div',
+                    { style: { marginTop: '10px', padding: '10px', background: '#f8f8f8' } },
+                    el('p', {}, 'Hidden content will appear here after form submission:'),
+                    el(InnerBlocks)
+                )
             );
         },
         save: function() {

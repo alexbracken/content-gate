@@ -83,25 +83,33 @@ function cg_render_callback( $attributes, $content ) {
     ob_start();
     ?>
     <div class="cg-content-gate">
-        <div class="cg-message">
+        <div class="cg-message" role="heading" aria-level="2">
             <h4 class="cg-heading"><?php echo esc_html($heading_text); ?></h4>
             <p class="cg-subheading"><?php echo esc_html($subhead_text); ?></p>
         </div>
-        <form class="cg-gate-form">
+        <form class="cg-gate-form" aria-labelledby="cg-form-title">
+            <span id="cg-form-title" class="screen-reader-text">Content access form</span>
+            
             <div class="cg-form-row">
                 <div class="cg-form-group">
                     <label for="cg-name">Name</label>
-                    <input type="text" id="cg-name" name="name" required>
+                    <input type="text" id="cg-name" name="name" required aria-required="true">
                 </div>
                 
                 <div class="cg-form-group">
                     <label for="cg-email">Email</label>
-                    <input type="email" id="cg-email" name="email" required>
+                    <input type="email" id="cg-email" name="email" required aria-required="true">
                 </div>
                 
                 <div class="cg-form-submit">
-                    <input type="submit" value="Submit">
+                    <input type="submit" value="Submit" aria-label="Submit form to access content">
                 </div>
+            </div>
+            
+            <!-- Honeypot field for spam prevention -->
+            <div class="cg-form-group" style="display:none !important; position:absolute; left:-9999px;">
+                <label for="cg-website">Website</label>
+                <input type="text" id="cg-website" name="website" autocomplete="off" tabindex="-1">
             </div>
             
             <input type="hidden" id="cg-post-id" value="<?php echo get_the_ID(); ?>">
@@ -122,13 +130,14 @@ function cg_render_callback( $attributes, $content ) {
                 <script src="https://www.google.com/recaptcha/api.js?render=<?php echo esc_attr($site_key); ?>" async defer></script>
             <?php endif; ?>
         </form>
-        <div class="cg-gated-content" style="display:none;">
+        <div class="cg-gated-content" style="display:none;" aria-live="polite">
             <?php echo $content; ?>
         </div>
     </div>
     <?php
     return ob_get_clean();
 }
+
 /**
  * Enqueue frontend scripts and styles.
  */

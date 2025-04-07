@@ -38,6 +38,48 @@
     width: 100%;
 }
 
+/* Status message styling */
+.cg-status-message {
+    margin: 1em 0;
+    padding: 0.5em;
+}
+
+.cg-status-message.cg-error {
+    color: #d32f2f;
+    border-left: 4px solid #d32f2f;
+    background-color: rgba(211, 47, 47, 0.1);
+}
+
+.cg-status-message.cg-success {
+    color: #388e3c;
+    border-left: 4px solid #388e3c;
+    background-color: rgba(56, 142, 60, 0.1);
+}
+
+/* Screen reader text */
+.screen-reader-text {
+    border: 0;
+    clip: rect(1px, 1px, 1px, 1px);
+    clip-path: inset(50%);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+    word-wrap: normal !important;
+}
+
+/* Smooth transitions for content reveal */
+.cg-gated-content {
+    transition: opacity 0.3s ease;
+    opacity: 0;
+}
+
+.cg-gated-content.visible {
+    opacity: 1;
+}
+
 /* Mobile responsiveness */
 @media (max-width: 600px) {
     .cg-form-row {
