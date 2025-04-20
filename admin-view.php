@@ -17,7 +17,7 @@ function cg_admin_view_page() {
         
         $results = $wpdb->get_results("SELECT * FROM $table_name ORDER BY submitted_at DESC");
         foreach ($results as $row) {
-            $post_title = get_the_title($row->post_id);
+            $post_title = $row->post_id ? get_the_title($row->post_id) : '';
             fputcsv($csv, [$row->id, $row->name, $row->email, $row->submitted_at, $post_title, $row->post_id]);
         }
         fclose($csv);
@@ -80,14 +80,22 @@ function cg_admin_view_page() {
         echo '<tbody>';
 
         foreach ($results as $row) {
-            $post_title = get_the_title($row->post_id);
-            $post_link = get_edit_post_link($row->post_id);
+            $post_title = $row->post_id ? get_the_title($row->post_id) : '';
+            $post_link = $row->post_id ? get_edit_post_link($row->post_id) : '#';
             echo "<tr>
                 <td>{$row->id}</td>
                 <td>" . esc_html($row->name) . "</td>
                 <td>" . esc_html($row->email) . "</td>
                 <td>" . esc_html($row->submitted_at) . "</td>
-                <td><a href='" . esc_url($post_link) . "'>" . esc_html($post_title) . "</a></td>
+                <td>";
+            
+            if ($post_title) {
+                echo "<a href='" . esc_url($post_link) . "'>" . esc_html($post_title) . "</a>";
+            } else {
+                echo "<em>Post not found</em>";
+            }
+            
+            echo "</td>
             </tr>";
         }
 
