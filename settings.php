@@ -9,6 +9,8 @@ function cg_register_settings() {
     register_setting( 'cg_settings_group', 'cg_recaptcha_site_key' );
     register_setting( 'cg_settings_group', 'cg_recaptcha_secret_key' );
     register_setting( 'cg_settings_group', 'cg_form_message' );
+    register_setting( 'cg_settings_group', 'cg_remember_user', array('default' => 'yes') );
+    register_setting( 'cg_settings_group', 'cg_cookie_days', array('default' => '30') );
 }
 add_action( 'admin_init', 'cg_register_settings' );
 
@@ -25,6 +27,23 @@ function cg_settings_page_html() {
                     <td>
                         <textarea name="cg_form_message" rows="3" cols="50"><?php echo esc_textarea( get_option('cg_form_message', 'This content is protected.') ); ?></textarea>
                         <p class="description">Message displayed to users above the form</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Remember Users:</th>
+                    <td>
+                        <select name="cg_remember_user">
+                            <option value="yes" <?php selected( get_option('cg_remember_user', 'yes'), 'yes' ); ?>>Yes</option>
+                            <option value="no" <?php selected( get_option('cg_remember_user', 'yes'), 'no' ); ?>>No</option>
+                        </select>
+                        <p class="description">Should users be remembered across gated content?</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Remember Duration:</th>
+                    <td>
+                        <input type="number" name="cg_cookie_days" value="<?php echo esc_attr( get_option('cg_cookie_days', '30') ); ?>" />
+                        <p class="description">Number of days to remember users (for cookie fallback)</p>
                     </td>
                 </tr>
                 <tr>

@@ -161,7 +161,9 @@ function cg_enqueue_scripts() {
         wp_localize_script( 'cg-frontend-script', 'cg_ajax', array(
             'ajax_url' => admin_url( 'admin-ajax.php' ),
             'nonce'    => wp_create_nonce( 'cg_ajax_nonce' ),
-            'recaptcha_secret' => get_option('cg_recaptcha_secret_key', '')
+            'recaptcha_secret' => get_option('cg_recaptcha_secret_key', ''),
+            'remember_user' => get_option('cg_remember_user', 'yes'),
+            'cookie_days' => intval(get_option('cg_cookie_days', '30'))
         ));
     }
 }
