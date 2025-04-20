@@ -80,9 +80,16 @@ function cg_render_callback( $attributes, $content ) {
     $heading_text = isset($attributes['headingText']) ? $attributes['headingText'] : 'This content is protected.';
     $subhead_text = isset($attributes['subheadText']) ? $attributes['subheadText'] : 'Please enter your information to continue.';
     
+    // Generate a unique ID for this gate instance
+    $gate_id = 'cg-' . uniqid();
+    
+    // Ensure content is a string before encoding
+    $content = is_null($content) ? '' : $content;
+    $encrypted_content = base64_encode($content);
+    
     ob_start();
     ?>
-    <div class="cg-content-gate">
+    <div class="cg-content-gate" id="<?php echo esc_attr($gate_id); ?>">
         <div class="cg-message" role="heading" aria-level="2">
             <h4 class="cg-heading"><?php echo esc_html($heading_text); ?></h4>
             <p class="cg-subheading"><?php echo esc_html($subhead_text); ?></p>
@@ -92,13 +99,13 @@ function cg_render_callback( $attributes, $content ) {
             
             <div class="cg-form-row">
                 <div class="cg-form-group">
-                    <label for="cg-name">Name</label>
-                    <input type="text" id="cg-name" name="name" required aria-required="true">
+                    <label for="cg-name-<?php echo esc_attr($gate_id); ?>">Name</label>
+                    <input type="text" id="cg-name-<?php echo esc_attr($gate_id); ?>" name="name" required aria-required="true">
                 </div>
                 
                 <div class="cg-form-group">
-                    <label for="cg-email">Email</label>
-                    <input type="email" id="cg-email" name="email" required aria-required="true">
+                    <label for="cg-email-<?php echo esc_attr($gate_id); ?>">Email</label>
+                    <input type="email" id="cg-email-<?php echo esc_attr($gate_id); ?>" name="email" required aria-required="true">
                 </div>
                 
                 <div class="cg-form-submit">
@@ -108,11 +115,12 @@ function cg_render_callback( $attributes, $content ) {
             
             <!-- Honeypot field for spam prevention -->
             <div class="cg-form-group" style="display:none !important; position:absolute; left:-9999px;">
-                <label for="cg-website">Website</label>
-                <input type="text" id="cg-website" name="website" autocomplete="off" tabindex="-1">
+                <label for="cg-website-<?php echo esc_attr($gate_id); ?>">Website</label>
+                <input type="text" id="cg-website-<?php echo esc_attr($gate_id); ?>" name="website" autocomplete="off" tabindex="-1">
             </div>
             
             <input type="hidden" id="cg-post-id" value="<?php echo get_the_ID(); ?>">
+            <input type="hidden" id="cg-content-data" value="<?php echo esc_attr($encrypted_content); ?>">
             
             <?php if ($site_key): ?>
                 <input type="hidden" id="cg-recaptcha-token" name="recaptcha">
@@ -130,14 +138,13 @@ function cg_render_callback( $attributes, $content ) {
                 <script src="https://www.google.com/recaptcha/api.js?render=<?php echo esc_attr($site_key); ?>" async defer></script>
             <?php endif; ?>
         </form>
-        <div class="cg-gated-content" style="display:none;" aria-live="polite">
-            <?php echo $content; ?>
+        <div class="cg-gated-content" style="display:none;" aria-live="polite" data-content-id="<?php echo esc_attr($gate_id); ?>">
+            <!-- Content will be inserted here via JavaScript -->
         </div>
     </div>
     <?php
     return ob_get_clean();
 }
-
 /**
  * Enqueue frontend scripts and styles.
  */
