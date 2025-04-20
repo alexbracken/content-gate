@@ -11,10 +11,6 @@
 // Prevent direct access
 defined( 'ABSPATH' ) || exit;
 
-// Include admin and settings files
-require_once plugin_dir_path(__FILE__) . 'settings.php';
-require_once plugin_dir_path(__FILE__) . 'admin-view.php';
-
 /**
  * Create table on plugin activation.
  */
@@ -41,6 +37,9 @@ function cg_create_table() {
     }
 }
 register_activation_hook( __FILE__, 'cg_create_table' );
+
+require_once plugin_dir_path(__FILE__) . 'settings.php';
+require_once plugin_dir_path(__FILE__) . 'admin-view.php';
 
 /**
  * Register the Gutenberg block.
