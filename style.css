@@ -66,14 +66,17 @@
     transition: border-color 0.2s ease;
 }
 
-/* Button styling that inherits from theme */
-.cg-gate-form input[type="submit"] {
-    padding: 0.5em 1.25em;
+/* Button styling that inherits from theme's WordPress button styles */
+.cg-gate-form .button {
+    /* These are minimal styles that let the button inherit theme styles */
+    display: inline-block;
     cursor: pointer;
-    font-family: inherit;
-    font-weight: 500;
-    text-transform: inherit;
-    transition: all 0.2s ease;
+    text-align: center;
+}
+
+/* Let theme style the primary button */
+.cg-gate-form .button-primary {
+    /* No custom styles - rely on theme */
 }
 
 /* Status message styling */
@@ -110,6 +113,11 @@
     word-wrap: normal !important;
 }
 
+/* Custom gate area - for blocks */
+.cg-custom-gate-area {
+    margin-bottom: 1.5em;
+}
+
 /* Smooth transitions for content reveal */
 .cg-gated-content {
     transition: opacity 0.3s ease;
@@ -138,7 +146,7 @@
         width: 100%;
     }
     
-    .cg-form-submit input[type="submit"] {
+    .cg-form-submit .button {
         width: 100%;
     }
 }

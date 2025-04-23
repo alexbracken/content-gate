@@ -96,7 +96,7 @@ jQuery(document).ready(function($) {
         if (checkUserAccess(postId)) {
             // User already has access, show content
             $gate.find('.cg-gate-form').hide();
-            $gate.find('.cg-message').hide();
+            $gate.find('.cg-message, .cg-custom-gate-area').hide();
             
             // Decrypt and display content
             revealEncryptedContent($gate);
@@ -109,14 +109,14 @@ jQuery(document).ready(function($) {
 
         var $form = $(this);
         var $gate = $form.closest('.cg-content-gate');
-        var $submitBtn = $form.find('input[type="submit"]');
+        var $submitBtn = $form.find('button[type="submit"]');
         var name = $form.find('input[name="name"]').val();
         var email = $form.find('input[name="email"]').val();
         var postId = $gate.find('#cg-post-id').val();
         var recaptchaToken = $gate.find('#cg-recaptcha-token').length ? $gate.find('#cg-recaptcha-token').val() : '';
         
         // Show loading state
-        $submitBtn.prop('disabled', true).val('Submitting...');
+        $submitBtn.prop('disabled', true).text('Submitting...');
         
         // Add status message container if it doesn't exist
         if (!$gate.find('.cg-status-message').length) {
@@ -141,7 +141,7 @@ jQuery(document).ready(function($) {
                 rememberSubmission(postId);
                 
                 $form.hide();
-                $gate.find('.cg-message').hide();
+                $gate.find('.cg-message, .cg-custom-gate-area').hide();
                 
                 // Decrypt and show content
                 revealEncryptedContent($gate);
@@ -149,13 +149,13 @@ jQuery(document).ready(function($) {
                 $status.removeClass('cg-success').addClass('cg-error')
                        .text(response.data || 'An error occurred. Please try again.')
                        .show();
-                $submitBtn.prop('disabled', false).val('Submit');
+                $submitBtn.prop('disabled', false).text('Submit');
             }
         }).fail(function() {
             $status.removeClass('cg-success').addClass('cg-error')
                    .text('Connection error. Please try again.')
                    .show();
-            $submitBtn.prop('disabled', false).val('Submit');
+            $submitBtn.prop('disabled', false).text('Submit');
         });
     });
 });

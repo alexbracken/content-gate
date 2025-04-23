@@ -56,13 +56,14 @@ function cg_register_block() {
         'editor_script'   => 'cg-block-script',
         'render_callback' => 'cg_render_callback',
         'attributes'      => array(
-            'headingText' => array(
-                'type' => 'string',
-                'default' => 'This content is protected.'
+            'useCustomGate' => array(
+                'type' => 'boolean',
+                'default' => false
             ),
-            'subheadText' => array(
+            'content' => array(
                 'type' => 'string',
-                'default' => 'Please enter your information to continue.'
+                'source' => 'html',
+                'selector' => '.cg-custom-gate-area'
             )
         )
     ));
@@ -75,9 +76,8 @@ add_action( 'init', 'cg_register_block' );
 function cg_render_callback( $attributes, $content ) {
     $site_key = get_option('cg_recaptcha_site_key', '');
     
-    // Get custom heading and subhead from block attributes or use defaults
-    $heading_text = isset($attributes['headingText']) ? $attributes['headingText'] : 'This content is protected.';
-    $subhead_text = isset($attributes['subheadText']) ? $attributes['subheadText'] : 'Please enter your information to continue.';
+    // Check if using custom gate layout
+    $use_custom_gate = isset($attributes['useCustomGate']) ? $attributes['useCustomGate'] : false;
     
     // Generate a unique ID for this gate instance
     $gate_id = 'cg-' . uniqid();
@@ -89,10 +89,18 @@ function cg_render_callback( $attributes, $content ) {
     ob_start();
     ?>
     <div class="cg-content-gate" id="<?php echo esc_attr($gate_id); ?>">
-        <div class="cg-message" role="heading" aria-level="2">
-            <h4 class="cg-heading"><?php echo esc_html($heading_text); ?></h4>
-            <p class="cg-subheading"><?php echo esc_html($subhead_text); ?></p>
-        </div>
+        <?php if ($use_custom_gate): ?>
+            <div class="cg-custom-gate-area wp-block-cg-gate-form">
+                <!-- Custom blocks will be rendered here from content -->
+                <?php echo do_blocks($attributes['content'] ?? ''); ?>
+            </div>
+        <?php else: ?>
+            <div class="cg-message" role="heading" aria-level="2">
+                <h4 class="cg-heading">This content is protected.</h4>
+                <p class="cg-subheading">Please enter your information to continue.</p>
+            </div>
+        <?php endif; ?>
+        
         <form class="cg-gate-form" aria-labelledby="cg-form-title">
             <span id="cg-form-title" class="screen-reader-text">Content access form</span>
             
@@ -108,7 +116,7 @@ function cg_render_callback( $attributes, $content ) {
                 </div>
                 
                 <div class="cg-form-submit">
-                    <input type="submit" value="Submit" aria-label="Submit form to access content">
+                    <button type="submit" class="button button-primary">Submit</button>
                 </div>
             </div>
             
@@ -144,6 +152,7 @@ function cg_render_callback( $attributes, $content ) {
     <?php
     return ob_get_clean();
 }
+
 /**
  * Enqueue frontend scripts and styles.
  */
