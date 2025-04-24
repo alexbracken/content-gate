@@ -1,178 +1,18 @@
 .cg-content-gate {
-    margin-bottom: 2em;
-    padding: 2em;
+    margin: 2em 0;
+    padding: 1.5em;
     background: #f8f9fa;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    font-family: inherit; /* Inherit from theme */
-    color: inherit; /* Inherit from theme */
-    line-height: inherit; /* Inherit from theme */
+    border-radius: 6px;
 }
-
-.cg-message {
-    margin-bottom: 1.5em;
-}
-
-.cg-heading {
-    font-family: inherit; /* Inherit from theme */
-    font-size: 1.5em;
-    font-weight: 600;
-    margin-top: 0;
-    margin-bottom: 0.5em;
-    color: inherit; /* Inherit from theme */
-}
-
-.cg-subheading {
-    font-family: inherit; /* Inherit from theme */
-    margin-top: 0;
-    margin-bottom: 1.2em;
-    font-size: 1em;
-    color: inherit; /* Inherit from theme */
-}
-
-.cg-form-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1em;
-    align-items: flex-end;
-    width: 100%;
-}
-
-.cg-form-group {
-    flex: 1;
-    min-width: 200px;
-}
-
-.cg-form-submit {
-    align-self: flex-end;
-}
-
-.cg-hidden-content {
-    display: none;
-}
-
-.cg-gate-form {
-    margin-top: 2em;
-}
-
 .cg-gate-form label {
     display: block;
     margin-bottom: 0.5em;
-    font-weight: 500;
-    font-family: inherit;
-    font-size: inherit;
-    color: inherit;
 }
-
-/* Input styling that inherits from theme */
-.cg-gate-form input[type="text"],
-.cg-gate-form input[type="email"] {
+.cg-gate-form input {
+    margin-bottom: 1em;
     width: 100%;
-    padding: 0.5em 0.75em;
-    border-radius: 4px;
-    background-color: transparent;
-    border-width: inherit;
-    border-style: inherit;
-    border-color: inherit;
-    font-family: inherit;
-    font-size: inherit;
-    color: inherit;
-    box-shadow: none;
-    transition: border-color 0.2s ease;
+    max-width: 300px;
 }
-
-/* Button styling that inherits from theme's WordPress button styles */
-.cg-gate-form .button {
-    /* These are minimal styles that let the button inherit theme styles */
-    display: inline-block;
-    cursor: pointer;
-    text-align: center;
-}
-
-/* Let theme style the primary button */
-.cg-gate-form .button-primary {
-    /* No custom styles - rely on theme */
-}
-
-/* Status message styling */
-.cg-status-message {
-    margin: 1em 0;
-    padding: 0.75em 1em;
-    border-radius: 4px;
-    font-family: inherit;
-}
-
-.cg-status-message.cg-error {
-    color: #d32f2f;
-    border-left: 4px solid #d32f2f;
-    background-color: rgba(211, 47, 47, 0.1);
-}
-
-.cg-status-message.cg-success {
-    color: #388e3c;
-    border-left: 4px solid #388e3c;
-    background-color: rgba(56, 142, 60, 0.1);
-}
-
-/* Screen reader text */
-.screen-reader-text {
-    border: 0;
-    clip: rect(1px, 1px, 1px, 1px);
-    clip-path: inset(50%);
-    height: 1px;
-    margin: -1px;
-    overflow: hidden;
-    padding: 0;
-    position: absolute;
-    width: 1px;
-    word-wrap: normal !important;
-}
-
-/* Custom gate area - for blocks */
-.cg-custom-gate-area {
-    margin-bottom: 1.5em;
-}
-
-/* Smooth transitions for content reveal */
-.cg-gated-content {
-    transition: opacity 0.3s ease;
-    opacity: 0;
-    height: 0;
-    overflow: hidden;
-    visibility: hidden;
-}
-
-.cg-gated-content.visible {
-    opacity: 1;
-    height: auto;
-    overflow: visible;
-    visibility: visible;
-}
-
-/* Mobile responsiveness */
-@media (max-width: 768px) {
-    .cg-form-row {
-        flex-direction: column;
-        gap: 0.75em;
-    }
-    
-    .cg-form-submit {
-        margin-top: 0.75em;
-        width: 100%;
-    }
-    
-    .cg-form-submit .button {
-        width: 100%;
-    }
-}
-
-/* Small mobile screens */
-@media (max-width: 480px) {
-    .cg-heading {
-        font-size: 1.25em;
-    }
-    
-    .cg-subheading {
-        font-size: 0.9em;
-    }
+.cg-gate-form button {
+    padding: 0.5em 1em;
 }
