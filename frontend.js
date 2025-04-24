@@ -88,6 +88,32 @@ jQuery(document).ready(function($) {
         }, 10);
     }
 
+    // Function to hide content below gate
+    function hideContentBelowGate($gate) {
+        var $contentToHide = $gate.nextAll();
+        $contentToHide.addClass('cg-hidden-content');
+        $contentToHide.hide();
+    }
+
+    // Function to show content below gate
+    function showContentBelowGate($gate) {
+        var $hiddenContent = $gate.nextAll('.cg-hidden-content');
+        $hiddenContent.fadeIn();
+        $hiddenContent.removeClass('cg-hidden-content');
+    }
+
+    // Initialize gates
+    $('.cg-content-gate').each(function() {
+        var $gate = $(this);
+        hideContentBelowGate($gate);
+
+        // Check if user already has access
+        if (checkUserAccess()) {
+            $gate.hide();
+            showContentBelowGate($gate);
+        }
+    });
+
     // Auto-unlock content if user is already remembered
     $('.cg-content-gate').each(function() {
         const $gate = $(this);

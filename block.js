@@ -2,29 +2,25 @@
     var el = element.createElement;
     var InnerBlocks = blockEditor.InnerBlocks;
     var useBlockProps = blockEditor.useBlockProps;
-    var InspectorControls = blockEditor.InspectorControls;
-    var PanelBody = wp.components.PanelBody;
-    var ToggleControl = wp.components.ToggleControl;
-
-    blocks.registerBlockType( 'cg/content-gate', {
+    
+    blocks.registerBlockType('cg/content-gate', {
         title: 'Content Gate',
         icon: 'lock',
         category: 'widgets',
-        attributes: {
-            useCustomGate: {
-                type: 'boolean',
-                default: false
-            }
-        },
-        edit: function(props) {
-            var attributes = props.attributes;
+        
+        edit: function() {
             var blockProps = useBlockProps({
-                className: 'cg-content-gate-editor',
-                style: { border: '1px dashed #ddd', padding: '10px' }
+                className: 'cg-content-gate-wrapper',
+                style: { 
+                    border: '1px dashed #5b9dd9', 
+                    background: 'rgba(91, 157, 217, 0.1)',
+                    padding: '20px',
+                    marginBottom: '20px'
+                }
             });
-            
+
             // Define allowed blocks for the form area
-            var ALLOWED_FORM_BLOCKS = [
+            var ALLOWED_BLOCKS = [
                 'core/paragraph', 
                 'core/heading', 
                 'core/image', 
@@ -32,22 +28,20 @@
                 'core/group',
                 'core/cover',
                 'core/button',
-                'core/buttons'
+                'core/buttons',
+                'core/html'
             ];
-            
-            // Define allowed blocks for the gated content
-            var ALLOWED_CONTENT_BLOCKS = null; // Allow all blocks in content
-            
-            // Templates
-            var DEFAULT_FORM_TEMPLATE = [
+
+            // Default template
+            var DEFAULT_TEMPLATE = [
                 ['core/heading', { 
-                    content: 'This content is protected.',
-                    level: 4,
+                    content: 'This content is protected',
+                    level: 2,
                     className: 'cg-heading'
                 }],
                 ['core/paragraph', { 
-                    content: 'Please enter your information to continue.',
-                    className: 'cg-subheading'
+                    content: 'Please enter your information to continue reading.',
+                    className: 'cg-description'
                 }]
             ];
             
@@ -55,92 +49,72 @@
                 'div',
                 blockProps,
                 el(
-                    InspectorControls,
-                    {},
-                    el(
-                        PanelBody,
-                        { title: 'Content Gate Settings', initialOpen: true },
-                        el(
-                            ToggleControl,
-                            {
-                                label: 'Use Custom Form Layout',
-                                help: attributes.useCustomGate ? 
-                                      'Using custom block layout for the form area' : 
-                                      'Using default form layout',
-                                checked: attributes.useCustomGate,
-                                onChange: function() {
-                                    props.setAttributes({ 
-                                        useCustomGate: !attributes.useCustomGate 
-                                    });
-                                }
-                            }
-                        )
+                    'div',
+                    { className: 'cg-gate-notice' },
+                    el('span', { 
+                        style: { 
+                            display: 'flex',
+                            alignItems: 'center',
+                            color: '#5b9dd9',
+                            marginBottom: '10px',
+                            fontStyle: 'italic'
+                        } 
+                    }, 
+                        el('span', { 
+                            className: 'dashicons dashicons-lock',
+                            style: { marginRight: '5px' }
+                        }),
+                        'Content Gate - All content below this block will be hidden until form submission'
                     )
                 ),
-                
-                // Form area - either custom blocks or default form preview
-                el(
-                    'div',
-                    { className: 'cg-form-area' },
-                    attributes.useCustomGate ? 
-                        el(
-                            InnerBlocks,
-                            { 
-                                allowedBlocks: ALLOWED_FORM_BLOCKS,
-                                templateLock: false,
-                                template: DEFAULT_FORM_TEMPLATE,
-                                className: 'cg-form-blocks'
-                            }
-                        ) :
-                        el(
-                            'div',
-                            { className: 'cg-preview' },
-                            el('h4', { className: 'cg-heading' }, 'This content is protected.'),
-                            el('p', { className: 'cg-subheading' }, 'Please enter your information to continue.')
-                        )
-                ),
-                
-                // Default form controls (always shown)
-                el(
-                    'div',
-                    { className: 'cg-form-preview', style: { display: 'flex', gap: '8px', marginBottom: '15px' } },
-                    el('div', { style: { flex: '1' } }, 
-                        el('label', { style: { display: 'block', marginBottom: '4px' } }, 'Name'), 
-                        el('input', { type: 'text', disabled: true, style: { width: '100%' } })
-                    ),
-                    el('div', { style: { flex: '1' } }, 
-                        el('label', { style: { display: 'block', marginBottom: '4px' } }, 'Email'), 
-                        el('input', { type: 'text', disabled: true, style: { width: '100%' } })
-                    ),
-                    el('div', { style: { alignSelf: 'flex-end' } }, 
-                        el('button', { 
-                            className: 'button button-primary', 
-                            disabled: true 
-                        }, 'Submit')
-                    )
-                ),
-                
-                // Gated content area
-                el(
-                    'div',
-                    { style: { marginTop: '10px', padding: '10px', background: '#f8f8f8' } },
-                    el('p', {}, 'Hidden content will appear here after form submission:'),
-                    el(
-                        InnerBlocks,
-                        { 
-                            allowedBlocks: ALLOWED_CONTENT_BLOCKS,
-                            templateLock: false
-                        }
-                    )
-                )
+                el(InnerBlocks, {
+                    allowedBlocks: ALLOWED_BLOCKS,
+                    template: DEFAULT_TEMPLATE,
+                    templateLock: false
+                })
             );
         },
+        
         save: function() {
-            return el( InnerBlocks.Content );
+            return el(
+                'div',
+                { className: 'cg-content-gate' },
+                el(InnerBlocks.Content),
+                el('form', { 
+                    className: 'cg-gate-form',
+                    action: '#'
+                },
+                el('div', { className: 'cg-form-row' },
+                    el('div', { className: 'cg-form-group' },
+                        el('label', { htmlFor: 'cg-name' }, 'Name'),
+                        el('input', { 
+                            type: 'text',
+                            id: 'cg-name',
+                            name: 'name',
+                            required: true
+                        })
+                    ),
+                    el('div', { className: 'cg-form-group' },
+                        el('label', { htmlFor: 'cg-email' }, 'Email'),
+                        el('input', { 
+                            type: 'email',
+                            id: 'cg-email',
+                            name: 'email',
+                            required: true
+                        })
+                    ),
+                    el('div', { className: 'cg-form-submit' },
+                        el('button', { 
+                            type: 'submit',
+                            className: 'button button-primary'
+                        }, 'Continue Reading')
+                    )
+                ))
+            );
         }
     });
-} )(
+})( 
     window.wp.blocks,
     window.wp.element,
-    window.wp.blockEditor || window.wp.editor
+    window.wp.blockEditor || window.wp.editor 
 );

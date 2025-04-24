@@ -1,5 +1,9 @@
 .cg-content-gate {
-    margin-bottom: 1.5em;
+    margin-bottom: 2em;
+    padding: 2em;
+    background: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     font-family: inherit; /* Inherit from theme */
     color: inherit; /* Inherit from theme */
     line-height: inherit; /* Inherit from theme */
@@ -36,10 +40,21 @@
 
 .cg-form-group {
     flex: 1;
-    min-width: 150px;
+    min-width: 200px;
 }
 
-/* Form elements that inherit from theme */
+.cg-form-submit {
+    align-self: flex-end;
+}
+
+.cg-hidden-content {
+    display: none;
+}
+
+.cg-gate-form {
+    margin-top: 2em;
+}
+
 .cg-gate-form label {
     display: block;
     margin-bottom: 0.5em;
