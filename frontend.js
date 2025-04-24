@@ -10,8 +10,27 @@ jQuery(function($){
 
         $gate.find('.cg-gate-form').on('submit', function(e){
             e.preventDefault();
-            localStorage.setItem('cg_unlocked_' + postId, '1');
-            showContent($gate);
+            var formData = {
+                name: $(this).find('input[name="name"]').val(),
+                email: $(this).find('input[name="email"]').val(),
+                post_id: postId
+            };
+
+            // Send form data via AJAX
+            $.ajax({
+                url: '/wp-admin/admin-ajax.php',
+                type: 'POST',
+                data: {
+                    action: 'cg_save_submission',
+                    data: formData
+                },
+                success: function(response) {
+                    if (response.success) {
+                        localStorage.setItem('cg_unlocked_' + postId, '1');
+                        showContent($gate);
+                    }
+                }
+            });
         });
 
         function showContent($gate) {

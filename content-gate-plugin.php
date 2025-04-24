@@ -70,3 +70,28 @@ function cg_enqueue_scripts() {
     }
 }
 add_action( 'wp_enqueue_scripts', 'cg_enqueue_scripts' );
+
+/**
+ * Handle AJAX form submissions
+ */
+function cg_save_submission() {
+    if (!isset($_POST['data'])) {
+        wp_send_json_error('No data received');
+        return;
+    }
+
+    $data = $_POST['data'];
+    
+    // Optional: Save submission to database
+    // global $wpdb;
+    // $wpdb->insert('your_submissions_table', array(
+    //     'name' => sanitize_text_field($data['name']),
+    //     'email' => sanitize_email($data['email']),
+    //     'post_id' => intval($data['post_id']),
+    //     'date_submitted' => current_time('mysql')
+    // ));
+
+    wp_send_json_success();
+}
+add_action('wp_ajax_cg_save_submission', 'cg_save_submission');
+add_action('wp_ajax_nopriv_cg_save_submission', 'cg_save_submission');
