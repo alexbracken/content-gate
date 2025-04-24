@@ -1,0 +1,33 @@
+.content-gate-form {
+    max-width: 400px;
+    margin: 2em auto;
+    padding: 2em;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.content-gate-form h3 {
+    margin-bottom: 1em;
+    text-align: center;
+}
+
+.content-gate-form input {
+    display: block;
+    width: 100%;
+    margin-bottom: 1em;
+    padding: 0.5em;
+}
+
+.content-gate-form button {
+    width: 100%;
+    padding: 0.5em;
+    background: #007cba;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.content-gate-form button:hover {
+    background: #006ba1;
+}

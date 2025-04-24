@@ -1,0 +1,14 @@
+{
+    "apiVersion": 2,
+    "name": "content-gate/registration",
+    "title": "Content Gate",
+    "category": "widgets",
+    "icon": "lock",
+    "description": "Add a registration form to gate content",
+    "supports": {
+        "html": false
+    },
+    "textdomain": "content-gate",
+    "editorScript": "file:./index.js",
+    "style": "file:./style.css"
+}
