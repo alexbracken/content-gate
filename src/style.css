@@ -1,33 +1,36 @@
 .content-gate-form {
-    max-width: 400px;
-    margin: 2em auto;
-    padding: 2em;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    margin: 2em 0;
+    padding: 1em 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .content-gate-form h3 {
+    margin-bottom: 0.5em;
+    font-size: 1.25em;
+    font-weight: normal;
+}
+
+.content-gate-form p {
     margin-bottom: 1em;
-    text-align: center;
+    opacity: 0.8;
 }
 
 .content-gate-form input {
     display: block;
     width: 100%;
+    max-width: 400px;
     margin-bottom: 1em;
     padding: 0.5em;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
 }
 
 .content-gate-form button {
-    width: 100%;
-    padding: 0.5em;
-    background: #007cba;
-    color: white;
+    padding: 0.5em 1.5em;
+    color: #fff;
+    background-color: currentColor;
     border: none;
-    border-radius: 4px;
+    border-radius: 3px;
     cursor: pointer;
-}
-
-.content-gate-form button:hover {
-    background: #006ba1;
 }

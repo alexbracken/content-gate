@@ -5,6 +5,16 @@
     "category": "widgets",
     "icon": "lock",
     "description": "Add a registration form to gate content",
+    "attributes": {
+        "heading": {
+            "type": "string",
+            "default": "Register to Continue Reading"
+        },
+        "subheading": {
+            "type": "string",
+            "default": "Complete the form below to access the full content"
+        }
+    },
     "supports": {
         "html": false
     },
