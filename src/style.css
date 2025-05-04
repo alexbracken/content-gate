@@ -1,0 +1,108 @@
+.content-gate-form {
+    max-width: 600px;
+    margin: 2em auto;
+    padding: 2em;
+    background: #fff;
+    border: 1px solid var(--wp--preset--color--contrast-3, #ddd);
+    border-radius: 2px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.content-gate-form h3 {
+    margin: 0 0 1em;
+    font-size: 1.3em;
+    font-weight: 600;
+    color: var(--wp--preset--color--contrast-3, #2c3338);
+}
+
+.content-gate-form p {
+    margin-bottom: 1.5em;
+    color: var(--wp--preset--color--contrast-2, #50575e);
+}
+
+.content-gate-form-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.content-gate-form-fields input[type="text"],
+.content-gate-form-fields input[type="email"] {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid var(--wp--preset--color--contrast-3, #8c8f94);
+    border-radius: 2px;
+    font-size: 14px;
+}
+
+.content-gate-remember {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--wp--preset--color--contrast-2, #50575e);
+}
+
+.content-gate-remember input[type="checkbox"] {
+    margin: 0;
+}
+
+.content-gate-form-fields .wp-element-button {
+    display: inline-block;
+    padding: 8px 12px;
+    font-size: 13px;
+    line-height: 1.5;
+    text-align: center;
+    cursor: pointer;
+    border-width: 1px;
+    border-style: solid;
+    -webkit-appearance: none;
+    border-radius: 3px;
+    white-space: nowrap;
+    box-sizing: border-box;
+    background: var(--wp-admin-theme-color, #007cba);
+    border-color: var(--wp-admin-theme-color, #007cba);
+    color: #fff;
+}
+
+.content-gate-block {
+    position: relative;
+    margin: 2em 0;
+}
+
+.content-gate-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 1em 0;
+}
+
+.content-gate-line {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    border: none;
+    border-top: 1px dashed #ddd;
+    margin: 0;
+    z-index: 1;
+}
+
+.content-gate-icon {
+    position: relative;
+    background: #fff;
+    padding: 0 10px;
+    color: #757575;
+    font-size: 13px;
+    line-height: 20px;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.content-gate-icon .dashicons {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+}

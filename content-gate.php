@@ -197,23 +197,41 @@ function content_gate_handle_submission() {
         }
     }
 
+    // Generate anonymous token
+    $random_bytes = random_bytes(16);
+    $token = bin2hex($random_bytes);
+    
     $response = array(
         'success' => true,
-        'token' => wp_create_nonce('content_gate_access')
+        'token' => $token
     );
 
     if ($remember) {
-        $token = wp_hash($email . time());
         setcookie(
             'content_gate_access',
             $token,
-            time() + (30 * DAY_IN_SECONDS),
-            COOKIEPATH,
-            COOKIE_DOMAIN,
-            is_ssl(),
-            true
+            array(
+                'expires' => time() + (30 * DAY_IN_SECONDS),
+                'path' => COOKIEPATH,
+                'domain' => COOKIE_DOMAIN,
+                'secure' => is_ssl(),
+                'httponly' => true,
+                'samesite' => 'Strict'
+            )
         );
-        $response['cookie_token'] = $token;
+    } else {
+        // Set session cookie
+        setcookie(
+            'content_gate_access',
+            $token,
+            array(
+                'path' => COOKIEPATH,
+                'domain' => COOKIE_DOMAIN,
+                'secure' => is_ssl(),
+                'httponly' => true,
+                'samesite' => 'Strict'
+            )
+        );
     }
 
     wp_send_json_success($response);
