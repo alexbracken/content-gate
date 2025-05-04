@@ -21,7 +21,7 @@ registerBlockType('content-gate/main', {
 
     edit({ attributes, setAttributes }) {
         const blockProps = useBlockProps({
-            className: 'content-gate-block',
+            className: 'content-gate-block wp-block-group',
         });
 
         return (
@@ -42,7 +42,7 @@ registerBlockType('content-gate/main', {
 
     save({ attributes }) {
         const blockProps = useBlockProps.save({
-            className: 'content-gate-block',
+            className: 'content-gate-block wp-block-group',
         });
 
         return (
