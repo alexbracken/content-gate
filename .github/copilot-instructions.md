@@ -1,0 +1,3 @@
+<!-- Use this file to provide workspace-specific custom instructions to Copilot. For more details, visit https://code.visualstudio.com/docs/copilot/copilot-customization#_use-a-githubcopilotinstructionsmd-file -->
+
+This is a WordPress plugin project. Please generate code compatible with modern WordPress, Bedrock, and Trellis. Use best practices for Gutenberg block development, AJAX, REST API, and security.

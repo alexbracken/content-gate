@@ -1,0 +1,17 @@
+.gcb-gated-content-block {
+    margin: 1em 0;
+}
+.gcb-gate-form {
+    background: #f9f9f9;
+    padding: 1em;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+.gcb-gated-section {
+    margin-top: 1em;
+}
+.gcb-privacy {
+    font-size: 0.9em;
+    color: #666;
+    margin-top: 0.5em;
+}
