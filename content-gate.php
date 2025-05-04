@@ -13,40 +13,14 @@ if (!defined('ABSPATH')) {
 }
 
 function content_gate_register_block() {
-    register_block_type(__DIR__ . '/build');
+    register_block_type(__DIR__ . '/src/block/block.json');
 
-    wp_add_inline_style('content-gate-style', '
-        .content-gate-block {
-            margin: 2em 0;
-            padding: 1em;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        .content-gate-notice {
-            background: #f8f8f8;
-            padding: 0.5em;
-            margin-bottom: 1em;
-            border-radius: 4px;
-        }
-        .content-gate-form {
-            max-width: 500px;
-            margin: 2em auto;
-            padding: 1em;
-        }
-        .content-gate-form-fields {
-            display: flex;
-            flex-direction: column;
-            gap: 1em;
-        }
-        .content-gate-form-fields input[type="text"],
-        .content-gate-form-fields input[type="email"] {
-            width: 100%;
-            padding: 0.5em;
-        }
-        .content-gate-form-fields button {
-            cursor: pointer;
-        }
-    ');
+    wp_register_style(
+        'content-gate-style',
+        plugins_url('build/style-index.css', __FILE__),
+        array(),
+        filemtime(plugin_dir_path(__FILE__) . 'build/style-index.css')
+    );
 }
 add_action('init', 'content_gate_register_block');
 

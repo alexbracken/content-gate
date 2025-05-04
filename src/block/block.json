@@ -8,10 +8,11 @@
     "icon": "lock",
     "description": "Gate content behind a name/email form",
     "supports": {
-        "html": false
+        "html": false,
+        "align": ["wide", "full"]
     },
     "textdomain": "content-gate",
-    "editorScript": "file:./index.js",
-    "editorStyle": "file:./index.css",
-    "style": "file:./style-index.css"
+    "editorScript": "file:../../build/index.js",
+    "editorStyle": "file:../../build/index.css",
+    "style": "file:../../build/style-index.css"
 }
