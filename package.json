@@ -1,24 +1,23 @@
 {
   "name": "content-gate",
-  "version": "0.1.3",
-  "description": "Creates a content gate block with reader registration form",
-  "homepage": "https://github.com/alexbracken/content-gate#readme",
-  "bugs": {
-    "url": "https://github.com/alexbracken/content-gate/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/alexbracken/content-gate.git"
-  },
-  "license": "ISC",
-  "author": "Alex Bracken",
-  "type": "wordpress-plugin",
-  "main": "src/index.js",
+  "version": "1.0.0",
+  "description": "WordPress content gating block plugin",
+  "main": "build/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "wp-scripts build"
+    "build": "wp-scripts build",
+    "start": "wp-scripts start",
+    "format": "wp-scripts format",
+    "lint:js": "wp-scripts lint-js"
   },
+  "keywords": ["wordpress", "block", "content-gate"],
+  "author": "",
+  "license": "GPL-2.0-or-later",
   "dependencies": {
-    "@wordpress/scripts": "^30.15.0"
+    "@wordpress/blocks": "^12.0.0",
+    "@wordpress/components": "^25.0.0",
+    "@wordpress/i18n": "^4.0.0"
+  },
+  "devDependencies": {
+    "@wordpress/scripts": "^26.0.0"
   }
 }

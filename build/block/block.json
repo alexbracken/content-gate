@@ -1,0 +1,17 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 2,
+  "name": "content-gate/main",
+  "version": "1.0.0",
+  "title": "Content Gate",
+  "category": "widgets",
+  "icon": "lock",
+  "description": "Gate content behind a name/email form",
+  "supports": {
+    "html": false
+  },
+  "textdomain": "content-gate",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}
